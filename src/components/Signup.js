@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import Button from 'react-bootstrap/Button';
 
 
 
@@ -89,14 +90,15 @@ function Signup(){
                     />
                 </div>
                 <br/>
-                <div>
-                    <button type='submit'>Sign Up</button>   
+                <div style={{textAlign:"center"}}>
+                    <Button variant="danger" type='submit'>Signup</Button>{' '}  
                 </div>
             </form>
-            <p>
-                <span>Already have an account? </span>
-                <Link to = "/login"><button>Login</button></Link>  
-            </p>
+            <br/>
+            <div>
+                <span>Already have an account?</span> 
+                <Link to = "/login"><Button variant="danger" type='submit'>Login</Button>{' '} </Link>  
+            </div>
         </div>
 
     )

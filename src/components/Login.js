@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState} from 'react'
 import { useNavigate } from 'react-router-dom'
+import Button from 'react-bootstrap/Button';
 
 function Login(){
 
@@ -18,7 +19,6 @@ function Login(){
 
     function validateUser(users){
         let authorized_user = users.filter(user => user.username === Username && user.password === Password)
-        console.log(authorized_user)
         if (authorized_user.length < 1){
             alert("Invalid Username or Password")
         }
@@ -29,6 +29,7 @@ function Login(){
         
     return (
         <div className='login-details'>
+            <h3>The Gateway to a World of Entertainment</h3>
             <form onSubmit={handleSubmit}>
                 <div id = "username">
                     <label htmlFor='username'>Username: </label>
@@ -51,7 +52,7 @@ function Login(){
                 </div>
                 <br />
                 <div>
-                    <button type='submit'>Login</button>   
+                    <Button variant="info" type='submit'>Login</Button>{' '}   
                 </div>
             </form>
         </div>
