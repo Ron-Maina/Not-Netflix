@@ -1,8 +1,12 @@
 import React from 'react'
 import { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+
 
 
 function Signup(){
+    const navigate = useNavigate()
+
     const [Username, setUsername] = useState("")
     const [Email, setEmail] = useState("")
     const [Password, setPassword] = useState("")
@@ -22,6 +26,10 @@ function Signup(){
         setUsername("")
         setEmail("")
         setPassword("")
+    }
+
+    function loginPage(){
+        navigate("/login", {replace: true})
     }
 
     function addToLogins(details){
@@ -44,11 +52,12 @@ function Signup(){
             setCheckEmail([...checkEmail, Email])
             setCheckName([...checkUsername, Username])
         }
+        loginPage()
     }
 
     return (
-        <div id = "signupPage">
-            <form onSubmit={handleSubmit} className='login-details'>
+        <div id = "signupPage" className='login-details'>
+            <form onSubmit={handleSubmit}>
                 <div id = "username">
                     <label htmlFor='username'>Username: </label>
                     <input
@@ -81,9 +90,13 @@ function Signup(){
                 </div>
                 <br/>
                 <div>
-                    <input type='submit' value='Submit'/>
+                    <button type='submit'>Sign Up</button>   
                 </div>
             </form>
+            <p>
+                <span>Already have an account? </span>
+                <Link to = "/login"><button>Login</button></Link>  
+            </p>
         </div>
 
     )
