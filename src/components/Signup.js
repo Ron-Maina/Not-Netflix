@@ -29,7 +29,7 @@ function Signup(){
     }
 
     function loginPage(){
-        navigate("/login", {replace: true})
+        navigate(1)("/login", {replace: true})
     }
 
     function addToLogins(details){
