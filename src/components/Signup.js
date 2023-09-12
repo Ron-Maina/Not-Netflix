@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
-
+import NavBar from './NavBar';
 
 
 function Signup(){
@@ -57,50 +57,52 @@ function Signup(){
     }
 
     return (
-        <div id = "signupPage" className='login-details'>
-            <form onSubmit={handleSubmit}>
-                <div id = "username">
-                    <label htmlFor='username'>Username: </label>
-                    <input
-                    required
-                    type='text'
-                    value={Username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
+        <>
+            <NavBar />
+            <div id = "signupPage" className='login-details'>
+                <form onSubmit={handleSubmit}>
+                    <div id = "username">
+                        <label htmlFor='username'>Username: </label>
+                        <input
+                        required
+                        type='text'
+                        value={Username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </div>
+                    <br/>
+                    <div id = "email">
+                        <label htmlFor='email'>Email: </label>
+                        <input
+                        required
+                        type='email'
+                        value={Email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <br/>
+                    <div id = "password">
+                        <label htmlFor='password'>Password: </label>
+                        <input
+                        required
+                        type='text'
+                        minLength="5"
+                        value={Password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+                    <br/>
+                    <div style={{textAlign:"center"}}>
+                        <Button variant="danger" type='submit'>Signup</Button>{' '}  
+                    </div>
+                </form>
                 <br/>
-                <div id = "email">
-                    <label htmlFor='email'>Email: </label>
-                    <input
-                    required
-                    type='email'
-                    value={Email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    />
+                <div>
+                    <span>Already have an account?</span> 
+                    <Link to = "/login"><Button variant="danger" type='submit'>Login</Button>{' '} </Link>  
                 </div>
-                <br/>
-                <div id = "password">
-                    <label htmlFor='password'>Password: </label>
-                    <input
-                    required
-                    type='text'
-                    minLength="5"
-                    value={Password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-                <br/>
-                <div style={{textAlign:"center"}}>
-                    <Button variant="danger" type='submit'>Signup</Button>{' '}  
-                </div>
-            </form>
-            <br/>
-            <div>
-                <span>Already have an account?</span> 
-                <Link to = "/login"><Button variant="danger" type='submit'>Login</Button>{' '} </Link>  
             </div>
-        </div>
-
+        </>
     )
 }
 
