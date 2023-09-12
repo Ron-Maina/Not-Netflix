@@ -5,6 +5,7 @@ import { Slide } from 'react-slideshow-image';
 import Carousel from 'react-bootstrap/Carousel';
 import Sidebar from './Sidebar'
 import NavBar from './NavBar';
+import MovieDetails from './MovieDetails';
 import {Route, Routes, useParams, useNavigate} from "react-router-dom"
 
 
@@ -22,7 +23,7 @@ function Home() {
       method: 'GET',
       headers: {
         "Accept": 'application/json',
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0YTVmNDFjNGYzNWU4YWNmZThhNTgzOGMwMjlmMWY4NiIsInN1YiI6IjY0ZmUxMThkNmEyMjI3MDBmZDFlZmZmZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.CvtBQSi3JQShP_TdwVrfr4OiH2rr1ZZHMT6SkHIrmxI'
+        Authorization: process.env.REACT_APP_API_KEY
       }
     })
     .then(res => res.json())
@@ -30,11 +31,11 @@ function Home() {
   }, [])
 
   useEffect(() => {
-    fetch('https://api.themoviedb.org/3/account/20421072/favorite/tv?language=en-US&page=1&sort_by=created_at.asc', {
+    fetch('https://api.themoviedb.org/3/account/20421072/favorite/tv?language=en-US&page=2&sort_by=created_at.asc', {
       method: 'GET',
       headers: {
         "Accept": 'application/json',
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0YTVmNDFjNGYzNWU4YWNmZThhNTgzOGMwMjlmMWY4NiIsInN1YiI6IjY0ZmUxMThkNmEyMjI3MDBmZDFlZmZmZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.CvtBQSi3JQShP_TdwVrfr4OiH2rr1ZZHMT6SkHIrmxI'
+        Authorization: process.env.REACT_APP_API_KEY
       }
     })
     .then(res => res.json())
@@ -72,7 +73,7 @@ function Home() {
 
           <h3 style={{fontFamily: "cursive", paddingLeft: "50px"}}>TV Shows</h3><hr/>
             <div className='posters' style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
-              {TvShows.map(show => (
+              {TvShows?.map(show => (
               <div key={show.id} style={{width: "200px", padding: "10px"}} onClick={() => viewDetails(0,show.id)}>
                 <img alt = {show.name} style={{width: "150px"}} src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}/>
                 <figcaption style={{justifyContent: "center", wordWrap: "break-word"}}>{show.name}</figcaption>
