@@ -2,6 +2,7 @@ import React from 'react'
 import { useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
+import NavBar from './NavBar';
 
 function Login(){
 
@@ -23,39 +24,42 @@ function Login(){
             alert("Invalid Username or Password")
         }
         else{
-            navigate("/home", {replace: true})
+            navigate("/movies", {replace: true})
         }
     }
         
     return (
-        <div className='login-details'>
-            <h3>The Gateway to a World of Entertainment</h3>
-            <form onSubmit={handleSubmit}>
-                <div id = "username">
-                    <label htmlFor='username'>Username: </label>
-                    <input
-                    required
-                    type='text'
-                    value={Username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
-                <br/>
-                <div id = "password">
-                    <label htmlFor='password'>Password: </label>
-                    <input
-                    required
-                    type='text'
-                    value={Password}
-                    onChange={(e) => setPass(e.target.value)}
-                    />
-                </div>
-                <br />
-                <div>
-                    <Button variant="info" type='submit'>Login</Button>{' '}   
-                </div>
-            </form>
-        </div>
+        <>
+            <NavBar />
+            <div className='login-details'>
+                <h3>The Gateway to a World of Entertainment</h3>
+                <form onSubmit={handleSubmit}>
+                    <div id = "username">
+                        <label htmlFor='username'>Username: </label>
+                        <input
+                        required
+                        type='text'
+                        value={Username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </div>
+                    <br/>
+                    <div id = "password">
+                        <label htmlFor='password'>Password: </label>
+                        <input
+                        required
+                        type='text'
+                        value={Password}
+                        onChange={(e) => setPass(e.target.value)}
+                        />
+                    </div>
+                    <br />
+                    <div>
+                        <Button variant="info" type='submit'>Login</Button>{' '}   
+                    </div>
+                </form>
+            </div>
+        </>
     )
 }
 
