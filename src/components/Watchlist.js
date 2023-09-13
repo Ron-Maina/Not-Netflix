@@ -20,8 +20,8 @@ function Watchlist({AddedWatchlist, onRemove}) {
                 <div  style={{display: "flex", flexWrap: "wrap", justifyContent: "normal"}}>
                     {AddedWatchlist.map(movie => (
                         <div key={movie.id} style={{width: "200px", padding: "10px", position: 'relative'}}>
-                            <img alt = {movie.title} style={{width: "150px"}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
-                            <figcaption style={{justifyContent: "center", wordWrap: "break-word"}}>{movie.title}</figcaption>
+                            <img alt = {movie.title || movie.name} style={{width: "150px"}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
+                            <figcaption style={{justifyContent: "center", wordWrap: "break-word"}}>{movie.title || movie.name}</figcaption>
                             <h4 onClick = {() => deleteMovie(movie.id)} style={{color: "white", position: 'absolute', top: "-5px", right: "30px"}}><AiFillDelete/></h4>
                         </div>
                     ))}
