@@ -16,7 +16,7 @@ function Sidebar() {
     const navigate = useNavigate()
 
     function Logout(){
-        navigate("/login", {replace: true})
+        navigate("/", {replace: true})
     }
 
     return (
@@ -34,7 +34,7 @@ function Sidebar() {
                         <NavLink to="/movies">
                         <CDBSidebarMenuItem icon="home">Home</CDBSidebarMenuItem>
                         </NavLink>
-                        <NavLink to="/watchlist">
+                        <NavLink to="/my-watchlist">
                         <CDBSidebarMenuItem icon="film">My WatchList</CDBSidebarMenuItem>
                         </NavLink>
                         <CDBSidebarMenuItem icon="times" onClick={Logout}>Logout</CDBSidebarMenuItem>
