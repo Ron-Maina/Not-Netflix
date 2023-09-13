@@ -5,16 +5,14 @@ import { Slide } from 'react-slideshow-image';
 import Carousel from 'react-bootstrap/Carousel';
 import Sidebar from './Sidebar'
 import NavBar from './NavBar';
-import MovieDetails from './MovieDetails';
-import {Route, Routes, useParams, useNavigate} from "react-router-dom"
+import {useNavigate} from "react-router-dom"
 
 
-function Home() {
+function Home({onRenderDetails}) {
 
   const [Trending, setTrending] = useState([])
   const [Movies, setMovies] = useState([])
   const [TvShows, setTvShows] = useState([])
-  const [selected, setSelected] = useState([])
 
   const navigate = useNavigate()
 
@@ -44,14 +42,17 @@ function Home() {
 
   
   function viewDetails(movie_id = 0, show_id = 0){
-    if (movie_id !== 0){
-      setSelected(Movies.filter(movie => movie.id === movie_id))
+    if (movie_id != 0){
+      const filteredMovie = Movies.filter(movie => movie.id === movie_id)
       navigate(`/movies/${movie_id}`)
+      onRenderDetails(filteredMovie)
     }
-    else if (show_id !== 0){
-      setSelected(TvShows.filter(show => show.id === show_id))
+    else if (show_id != 0){
+      const filteredShow = TvShows.filter(show => show.id === show_id)
       navigate(`/movies/${show_id}`)
+      onRenderDetails(filteredShow)
     }
+
   }
 
   return (
@@ -73,7 +74,7 @@ function Home() {
 
           <h3 style={{fontFamily: "cursive", paddingLeft: "50px"}}>TV Shows</h3><hr/>
             <div className='posters' style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
-              {TvShows?.map(show => (
+              {TvShows.map(show => (
               <div key={show.id} style={{width: "200px", padding: "10px"}} onClick={() => viewDetails(0,show.id)}>
                 <img alt = {show.name} style={{width: "150px"}} src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}/>
                 <figcaption style={{justifyContent: "center", wordWrap: "break-word"}}>{show.name}</figcaption>
