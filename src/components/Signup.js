@@ -30,7 +30,7 @@ function Signup(){
     }
 
     function loginPage(){
-        navigate(1)("/login", {replace: true})
+        navigate("/login")
     }
 
     function addToLogins(details){
@@ -49,7 +49,7 @@ function Signup(){
                 },
                 body: JSON.stringify(details)
             })
-            alert("Successfully Added")
+            alert("Sign Up Successful")
             setCheckEmail([...checkEmail, Email])
             setCheckName([...checkUsername, Username])
         }
