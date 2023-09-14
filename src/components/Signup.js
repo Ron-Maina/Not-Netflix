@@ -64,6 +64,7 @@ function Signup(){
                     <div id = "username">
                         <label htmlFor='username'>Username: </label>
                         <input
+                        name='username'
                         required
                         type='text'
                         value={Username}
@@ -74,6 +75,7 @@ function Signup(){
                     <div id = "email">
                         <label htmlFor='email'>Email: </label>
                         <input
+                        name='email'
                         required
                         type='email'
                         value={Email}
@@ -84,6 +86,7 @@ function Signup(){
                     <div id = "password">
                         <label htmlFor='password'>Password: </label>
                         <input
+                        name='password'
                         required
                         type='text'
                         minLength="5"

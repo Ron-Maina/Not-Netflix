@@ -37,6 +37,7 @@ function Login(){
                     <div id = "username">
                         <label htmlFor='username'>Username: </label>
                         <input
+                        name='username'
                         required
                         type='text'
                         value={Username}
@@ -47,6 +48,7 @@ function Login(){
                     <div id = "password">
                         <label htmlFor='password'>Password: </label>
                         <input
+                        name='password'
                         required
                         type='text'
                         value={Password}
