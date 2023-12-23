@@ -54,8 +54,8 @@ function Login({onUser}){
     }
         
     return (
-        <div className='page'>
-            <div id="bg">
+        <div className='auth-page'>
+            <div className="bg">
                 <img src='https://help.nflxext.com/0af6ce3e-b27a-4722-a5f0-e32af4df3045_what_is_netflix_5_en.png' alt='background'/>
             </div>
             <>
