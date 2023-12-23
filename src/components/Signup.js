@@ -16,10 +16,11 @@ function Signup(){
     const [Password, setPassword] = useState("")
     const [confirmed_password, setconfirmed_password] = useState("")
 
-    const [ userDetails, setUserDetails ] = useState([]);
+    const [userDetails, setUserDetails ] = useState([]);
+
+    const [user, setUser] = useState({})
 
     const [showPassword, setShowPassword] = useState(false);
-
     const [passworderror, setpassworderror] = useState(false); 
     const [successfulSignup, setSuccessfulSignup] = useState(false); 
     const [signUpFailed, setSignUpFailed] = useState(false); 
@@ -38,8 +39,24 @@ function Signup(){
             }
           })
           .then(res => res.json())
-          .then(data => console.log(data)) 
+          .then(data => setUser(data)) 
     }, [userDetails])
+
+    useEffect(() => {
+        fetch('http://127.0.0.1:5000/api/users', {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+        .then (res => res.json())
+        .then(data => {
+            console.log(data)
+            navigate('/movies')
+        })
+    }, [user])
 
     function handleSubmit(e){
         e.preventDefault()
@@ -96,8 +113,8 @@ function Signup(){
     }
 
     return (
-        <div className='page'>
-            <div id="bg">
+        <div className='auth-page'>
+            <div className="bg">
                 <img src='https://help.nflxext.com/43e0db2f-fea0-4308-bfb9-09f2a88f6ee4_what_is_netflix_1_en.png' alt='background'/>
             </div>
             <>
