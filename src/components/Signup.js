@@ -1,14 +1,13 @@
-import React, {useEffect} from 'react'
-import { useGoogleLogin } from '@react-oauth/google';
-import {FaGoogle} from "react-icons/fa";
+import React, {useEffect, useState} from 'react'
+import { jwtDecode } from "jwt-decode";
 
-import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
 import NavBar from './NavBar';
 
 
 function Signup(){
+
     const navigate = useNavigate()
 
     const [Username, setUsername] = useState("")
@@ -25,38 +24,29 @@ function Signup(){
     const [successfulSignup, setSuccessfulSignup] = useState(false); 
     const [signUpFailed, setSignUpFailed] = useState(false); 
 
-    const login = useGoogleLogin({
-        onSuccess: tokenResponse => setUserDetails(tokenResponse),
-        onError: (error) => console.log('Login Failed:', error)
-    });
 
-    useEffect(() => {
-        fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${userDetails.access_token}`, {
-            method: 'GET',
-            headers: {
-              "Accept": 'application/json',
-              Authorization: `Bearer ${userDetails.access_token}`
-            }
-          })
-          .then(res => res.json())
-          .then(data => setUser(data)) 
-    }, [userDetails])
+    function handleCallBackResponse(response){
+        console.log(response.credential)
+        let userObject = jwtDecode(response.credential);
+        registerUser(userObject)
+        console.log(userObject)
 
+    }
+  
     useEffect(() => {
-        fetch('http://127.0.0.1:5000/api/users', {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(user)
-        })
-        .then (res => res.json())
-        .then(data => {
-            console.log(data)
-            navigate('/movies')
-        })
-    }, [user])
+    /*global google*/
+    google.accounts.id.initialize({
+        client_id:"957308811194-lk7p997rgsjle3v560grp8n1bmbkklhe.apps.googleusercontent.com",
+        callback: handleCallBackResponse
+    })
+    
+    google.accounts.id.renderButton(
+        document.getElementById('google-auth'),
+        {theme: 'Outline', size: 'large'}
+    )
+
+    }, [])
+
 
     function handleSubmit(e){
         e.preventDefault()
@@ -72,7 +62,7 @@ function Signup(){
             }, 2000)
         }
         else{
-            addToLogins(userDetails)
+            registerUser(userDetails)
             setUsername("")
             setEmail("")
             setPassword("")
@@ -80,13 +70,9 @@ function Signup(){
         }       
     }
 
-    function loginPage(){
-        navigate("/login")
-        setSuccessfulSignup(false);
-    }
-
-    function addToLogins(details){
-        fetch('http://127.0.0.1:5000/api/users', {
+    function registerUser(details){
+        console.log(details)
+        fetch('/register-user', {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -94,22 +80,29 @@ function Signup(){
             },
             body: JSON.stringify(details)
         })
-        .then (res => res.json())
-        .then(data => {
-            if (data[1] === 201){
-                setSuccessfulSignup(true);
-                loginPage()
+        .then(response => {
+            if (response.ok) {
+              // Successful response (status code in the range 200-299)
+              return response.json();
+            } else {
+              // Handle errors
+              
+              throw new Error('Request failed with status ' + response.status);
             }
-            else {
-                setSignUpFailed(true)
+        })
+        .then(data => {
+            setSuccessfulSignup(true);
+            navigate("/login")
+            setSuccessfulSignup(false);   
+        })  
+        .catch(error => {
+            // Handle errors from the fetch or from the response handling
+            setSignUpFailed(true)
                 setTimeout(() => {
                     setSignUpFailed(false)
                 }, 2000)
-                
-            }
-        })
-        
-        
+            console.error('Error during fetch:', error);
+        });
     }
 
     return (
@@ -186,7 +179,7 @@ function Signup(){
                                 Show password
                             </label>
                         </div>
-
+                        <br/>
                         {passworderror && (
                             <p style={{ color: 'red', textAlign: 'center' }}>Password does not match. Try Again</p>
                         )}
@@ -195,7 +188,7 @@ function Signup(){
                             <Button variant="danger" type='submit' size='lg' style={{fontFamily: 'fantasy'}}>Signup</Button>{' '} 
                         </div>
                     </form>
-
+                    <br/>
                     {successfulSignup && (
                         <p style={{ color: 'white', textAlign: 'center' }}>Successful signup</p>
                     )}
@@ -203,14 +196,14 @@ function Signup(){
                         <p style={{ color: 'red', textAlign: 'center' }}>SignUp Failed! Email already exist</p>
                     )}
                     
-                    <br />
                     <h4 style={{fontSize: '1em'}}>OR</h4>
-                    <div style={{textAlign:"center", paddingTop: '10px'}} className="d-grid gap-2">
-                        <Button style={{display: 'flex', gap: '10px'}} variant="outline-light" type='submit' onClick={() => login()}><FaGoogle style={{marginTop: '5px'}}/> Sign up with Google </Button>{' '} 
-                    </div>
+
+                    <div id='google-auth'></div>
+
                     <div style={{display: 'flex', gap: '10px', paddingTop: '30px'}}>
-                        <p> <span style={{color: 'gray'}}>Have an account?</span> <Link to = "/login" style={{textDecoration: 'none', color: 'white', fontFamily: 'cursive', fontSize: '20px', }}><strong>Sign in</strong></Link></p> 
+                        <p> <span style={{color: 'gray'}}>Have an account?</span> <Link to = "/" style={{textDecoration: 'none', color: 'white', fontFamily: 'cursive', fontSize: '20px', }}><strong>Sign in</strong></Link></p> 
                     </div>
+
                 </div>
             </>
         </div>
