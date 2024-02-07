@@ -57,12 +57,7 @@ function Sidebar() {
         <div className='sidebar' onMouseLeave={handleSidebarClose}>
             {!sidebarOpen ? (
                 <div onMouseEnter={handleSidebarOpen} onMouseLeave={handleOut}>
-                    {/* <CDBSidebarHeader 
-                    prefix={<i className="fa fa-bars fa-large"></i>}
-                    >
-                        <h4 className="text-decoration-none" style={{ color: 'inherit' }}> </h4>
-                    </CDBSidebarHeader> */}
-
+                    
                     <CDBSidebarContent className="sidebar-content">
                         <CDBSidebarMenu id = 'sidebar-menu'>
                             <CDBSidebarMenuItem id= 'sidebar-items' icon="user"></CDBSidebarMenuItem>
@@ -79,12 +74,7 @@ function Sidebar() {
                 </div>
             ) : (
                 <div style={{marginRight: '50px'}}>  
-                    {/* <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
-                        <h4 className="text-decoration-none" style={{ color: 'inherit' }}>
-                        Menu
-                        </h4>
-                    </CDBSidebarHeader> */}
-
+                  
                     <CDBSidebarContent className="sidebar-content">
                         <CDBSidebarMenu id = 'sidebar-menu'>
                             <CDBSidebarMenuItem id= 'sidebar-items' icon="user">{`Welcome ${user_name[0]}`}</CDBSidebarMenuItem>
