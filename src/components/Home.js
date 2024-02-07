@@ -6,6 +6,8 @@ import {GoDotFill} from "react-icons/go";
 import { FaPlay } from "react-icons/fa";
 import { FiPlusCircle } from "react-icons/fi";
 import { AiOutlineClose } from 'react-icons/ai';
+import Alert from 'react-bootstrap/Alert';
+
 
 
 
@@ -18,8 +20,15 @@ import SearchBar from './SearchBar'
 
 
 function Home({onRenderWatchlist}) {
- 
+
   const navigate = useNavigate()
+  const token = localStorage.getItem('jwt-token');
+  const [successful, setSuccessful] = useState(false)
+  const [failed, setFailed] = useState(false)
+
+  const [myWatchlist, setMyWatchlist] = useState([])
+
+
   const [searchTerm, setSearchTerm] = useState('')
 
   const [Display, setDisplay] = useState([])
@@ -99,23 +108,18 @@ function Home({onRenderWatchlist}) {
       })
     .then(response => response.json())
     .then(data => {
-      console.log(data)
       videoData = data.items[0].id.videoId
       renderVideo(videoData)
       setVideoId(videoData)
     })
     
     function renderVideo(videoData){
-      console.log(videoData)
-
       if (videoData){
         setShowVideo(true)
-        console.log(videoId)
       }
       else{
         alert("Error playing Video")
       }
-      console.log(videoId)
     }
     
   }
@@ -127,12 +131,54 @@ function Home({onRenderWatchlist}) {
   const filtered_display = Display.filter(movie => {
     return (movie.title || movie.name).toLowerCase().includes(searchTerm.toLowerCase())
   })
+
+
+  function addToWatchlist(movie){
+    fetch('/watchlist', {
+      method: "POST",
+      credentials: 'include',
+      headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",   
+          'Authorization': 'Bearer ' + token,
+      },
+      body: JSON.stringify({
+        'poster_path': movie.poster_path,
+        'name': movie.name || movie.title,
+        'id': movie.id,
+      })
+    })
+    .then(response => {
+        if (response.ok) {
+            // return response.json();
+            setSuccessful(true)
+        } 
+        else {
+          setFailed(true)
+          throw new Error('Request failed with status ' + response.status);
+        }
+    })
+    .catch(error => {
+        // Handle errors from the fetch or from the response handling
+        console.error('Error during fetch:', error);
+    });   
+           
+  }
+  
+  setTimeout(() => {
+    setSuccessful(false)
+  }, 1000);
+
+  setTimeout(() => {
+    setFailed(false)
+  }, 1000);
   
 
   return (
     <>
       <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr' }} className='app-page'>
         <Sidebar />
+        
 
         <div style={{height: "100vh", overflow: "hidden"}} >
           <div className='home-nav'>
@@ -174,12 +220,31 @@ function Home({onRenderWatchlist}) {
                           <FaPlay style={{fontSize: '10px', marginBottom: '2px', marginRight: '5px'}}/> 
                           Watch
                         </button> 
-                        <button className='default-filter' onClick={() => onRenderWatchlist(movieDetails)}> <FiPlusCircle style={{fontSize: '15px', marginBottom: '2px', marginRight: '5px'}}/> Add to Watchlist</button> 
+                        <button className='default-filter' onClick={() => addToWatchlist(movieDetails)}> 
+                          <FiPlusCircle style={{fontSize: '15px', marginBottom: '2px', marginRight: '5px'}}/> 
+                          Add to Watchlist
+                        </button> 
                       </div>
                     </div>
                   </div>
                 )}
               </>
+            )}
+
+            {successful && (
+              <div className='alert-box'>
+                <Alert variant={'success'} className='alert'>
+                  Added Successfully
+                </Alert>
+              </div>
+            )}
+
+            {failed && (
+              <div className='alert-box'>
+                <Alert variant={'danger'} className='alert'>
+                  Movie may already exist in Watchlist
+                </Alert>
+              </div>
             )}
 
             {showVideo && (
