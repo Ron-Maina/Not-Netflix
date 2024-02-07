@@ -1,7 +1,7 @@
+
 import React from 'react'
 import { useState } from 'react';
 import {
-    CDBSidebar,
     CDBSidebarContent,
     CDBSidebarFooter,
     CDBSidebarHeader,
@@ -10,49 +10,99 @@ import {
   } from 'cdbreact';
 import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
+
 
 function Sidebar() {
 
     const navigate = useNavigate()
+    const token = localStorage.getItem('jwt-token');
+
+    const user = jwtDecode(token)
+
+    const user_name = (user.sub).split('@')
+
+    console.log(user_name)
+
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const handleSidebarOpen = () => {
+      setSidebarOpen(true);
+      handleOver()
+    };
+
+    const handleSidebarClose = () => {
+      setSidebarOpen(false);
+      handleOut()
+    };
+    
+
+    const [isActive, setIsActive] = useState(false);
+    function handleOver(){
+      setIsActive(true)
+    }
+
+    function handleOut(){
+        setIsActive(false)
+    }
 
     function Logout(){
-        navigate("/", {replace: true})
+        fetch("/logout", {
+            method: "DELETE",
+        })
+
+        navigate("/loginpage", {replace: true})
     }
 
     return (
-        <div style={{height: '100vh', overflow: 'scroll initial' }}>
-            <CDBSidebar textColor="#fff" backgroundColor="#333">
-                <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
-                    <a href="/" className="text-decoration-none" style={{ color: 'inherit' }}>
-                    Menu
-                    </a>
-                </CDBSidebarHeader>
+        <div className='sidebar' onMouseLeave={handleSidebarClose}>
+            {!sidebarOpen ? (
+                <div onMouseEnter={handleSidebarOpen} onMouseLeave={handleOut}>
+                    {/* <CDBSidebarHeader 
+                    prefix={<i className="fa fa-bars fa-large"></i>}
+                    >
+                        <h4 className="text-decoration-none" style={{ color: 'inherit' }}> </h4>
+                    </CDBSidebarHeader> */}
 
-                <CDBSidebarContent className="sidebar-content">
-                    <CDBSidebarMenu>
-                        <CDBSidebarMenuItem icon="user">Hello</CDBSidebarMenuItem>
-                        <NavLink to="/movies">
-                        <CDBSidebarMenuItem icon="home">Home</CDBSidebarMenuItem>
-                        </NavLink>
-                        <NavLink to="/my-watchlist">
-                        <CDBSidebarMenuItem icon="film">My WatchList</CDBSidebarMenuItem>
-                        </NavLink>
-                        <CDBSidebarMenuItem icon="times" onClick={Logout}>Logout</CDBSidebarMenuItem>
-                    </CDBSidebarMenu>
-                </CDBSidebarContent>
-
-                <CDBSidebarFooter style={{ textAlign: 'center' }}>
-                <div
-                    className="sidebar-btn-wrapper"
-                    style={{
-                    padding: '20px 5px',
-                    }}
-                >
-                    Project by Ron Mwangi
+                    <CDBSidebarContent className="sidebar-content">
+                        <CDBSidebarMenu id = 'sidebar-menu'>
+                            <CDBSidebarMenuItem id= 'sidebar-items' icon="user"></CDBSidebarMenuItem>
+                            <CDBSidebarMenuItem id= 'sidebar-items' icon="search" onClick={Logout}></CDBSidebarMenuItem>
+                            <NavLink to="/home">
+                                <CDBSidebarMenuItem id= 'sidebar-items' icon="home"></CDBSidebarMenuItem>
+                            </NavLink>
+                            <NavLink to="/my-watchlist">
+                                <CDBSidebarMenuItem id= 'sidebar-items' icon="film"></CDBSidebarMenuItem>
+                            </NavLink>
+                            <CDBSidebarMenuItem id= 'sidebar-items' icon="times" onClick={Logout}></CDBSidebarMenuItem>
+                        </CDBSidebarMenu>
+                    </CDBSidebarContent>                   
                 </div>
-                </CDBSidebarFooter>
-            </CDBSidebar>
+            ) : (
+                <div style={{marginRight: '50px'}}>  
+                    {/* <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
+                        <h4 className="text-decoration-none" style={{ color: 'inherit' }}>
+                        Menu
+                        </h4>
+                    </CDBSidebarHeader> */}
+
+                    <CDBSidebarContent className="sidebar-content">
+                        <CDBSidebarMenu id = 'sidebar-menu'>
+                            <CDBSidebarMenuItem id= 'sidebar-items' icon="user">{`Welcome ${user_name[0]}`}</CDBSidebarMenuItem>
+                            <CDBSidebarMenuItem id= 'sidebar-items' icon="search" onClick={Logout}>Search</CDBSidebarMenuItem>
+                            <NavLink to="/home">
+                                <CDBSidebarMenuItem id= 'sidebar-items' icon="home">Home</CDBSidebarMenuItem>
+                            </NavLink>
+                            <NavLink to="/my-watchlist">
+                                <CDBSidebarMenuItem id= 'sidebar-items' icon="film">My WatchList</CDBSidebarMenuItem>
+                            </NavLink>
+                            <CDBSidebarMenuItem id= 'sidebar-items' icon="times" onClick={Logout}>Logout</CDBSidebarMenuItem>
+                        </CDBSidebarMenu>
+                    </CDBSidebarContent>
+                    
+                </div>
+            )}
         </div>
+        
     );
     
     
