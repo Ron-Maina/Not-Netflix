@@ -1,57 +1,93 @@
 import React, { useEffect }  from 'react'
-import { useGoogleLogin } from '@react-oauth/google';
-import {FaGoogle} from "react-icons/fa";
+import { jwtDecode } from "jwt-decode";
+
 
 import { useState} from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link} from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
 import NavBar from './NavBar';
+import useAuth from './CustomHooks/useAuth';
 
-function Login({onUser}){
+function Login(){
 
     const navigate = useNavigate() 
+
+    const {setAuth} = useAuth()
+
     const [Username, setUsername] = useState("")
     const [Password, setPassword] = useState("")
-
-    const [ userDetails, setUserDetails ] = useState([]);
-
     const [showPassword, setShowPassword] = useState(false);
 
-    const login = useGoogleLogin({
-        onSuccess: tokenResponse => setUserDetails(tokenResponse),
-        onError: (error) => console.log('Login Failed:', error)
-    });
+    const [ userDetails, setUserDetails ] = useState([]);
+    const [signInFailed, setSignInFailed] = useState(false); 
 
+
+   
+    function handleCallBackResponse(response){
+        let userObject = jwtDecode(response.credential);
+        loginUser(userObject)
+        // console.log(userObject)
+    }
+  
     useEffect(() => {
-        fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${userDetails.access_token}`, {
-            method: 'GET',
+        /*global google*/
+        google.accounts.id.initialize({
+            client_id:"957308811194-lk7p997rgsjle3v560grp8n1bmbkklhe.apps.googleusercontent.com",
+            callback: handleCallBackResponse
+        })
+        
+        google.accounts.id.renderButton(
+            document.getElementById('google-auth'),
+            {theme: 'Outline', size: 'large'}
+        )
+
+        google.accounts.id.prompt()
+    }, [])
+
+    function loginUser(details){
+        // console.log(details)
+        fetch('/login', {
+            method: "POST",
+            credentials: 'include',
             headers: {
-              "Accept": 'application/json',
-              Authorization: `Bearer ${userDetails.access_token}`
+                "Accept": "application/json",
+                "Content-Type": "application/json",   
+            },
+            body: JSON.stringify(details)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Request failed with status ' + response.status);
             }
-          })
-          .then(res => res.json())
-          .then(data => console.log(data)) 
-    }, [userDetails])
+        })
+        .then(data => {
+            console.log(data)
+            localStorage.setItem("jwt-token", data[0].access_token);
+            localStorage.setItem("user-id", data[0].id);
+            setAuth({accessToken: data[0].access_token})
+            setUsername("")
+            setPassword("")
+            navigate('/home', {replace: true})
+        }) 
+        .catch(error => {
+            // Handle errors from the fetch or from the response handling
+            setSignInFailed(true)
+                setTimeout(() => {
+                    setSignInFailed(false)
+                }, 2000)
+            console.error('Error during fetch:', error);
+            });   
+        
+        
+    }
 
     function handleSubmit(e){
         e.preventDefault()
-
-        fetch('http://localhost:3001/userDetails')
-        .then(res => res.json())
-        .then(users => validateUser(users))   
+        loginUser({'username': Username, 'password': Password})   
     }
 
-    function validateUser(users){
-        let authorized_user = users.filter(user => user.username === Username && user.password === Password)
-        if (authorized_user.length < 1){
-            alert("Invalid Username or Password")
-        }
-        else{
-            navigate("/movies", {replace: true})
-        }
-        onUser(authorized_user)
-    }
         
     return (
         <div className='auth-page'>
@@ -107,11 +143,15 @@ function Login({onUser}){
                     </form>
                     <br />
                     <h4 style={{fontSize: '1em'}}>OR</h4>
-                    <div style={{textAlign:"center", paddingTop: '10px'}} className="d-grid gap-2">
-                        <Button style={{display: 'flex', gap: '10px'}} variant="outline-light" type='submit' onClick={() => login()}><FaGoogle style={{marginTop: '5px'}}/> Sign in with Google </Button>{' '} 
-                    </div>
+
+                    <div id='google-auth'></div>
+                    <br/>
+                    {signInFailed && (
+                        <p style={{ color: 'red', textAlign: 'center' }}>Failed Login. Try Again</p>
+                    )}
+
                     <div style={{display: 'flex', gap: '10px', paddingTop: '30px'}}>
-                        <p> <span style={{color: 'gray'}}>New to Not-Netflix?</span> <Link to = "/" style={{textDecoration: 'none', color: 'white', fontFamily: 'cursive', fontSize: '20px', }}><strong>Sign up now</strong></Link></p> 
+                        <p> <span style={{color: 'gray'}}>New to Not-Netflix?</span> <Link to = "/signup" style={{textDecoration: 'none', color: 'white', fontFamily: 'cursive', fontSize: '20px', }}><strong>Sign up now</strong></Link></p> 
                     </div>
                 </div>
             </>
