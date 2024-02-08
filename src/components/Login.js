@@ -18,7 +18,6 @@ function Login(){
     const [Password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false);
 
-    const [ userDetails, setUserDetails ] = useState([]);
     const [signInFailed, setSignInFailed] = useState(false); 
 
 
@@ -26,7 +25,6 @@ function Login(){
     function handleCallBackResponse(response){
         let userObject = jwtDecode(response.credential);
         loginUser(userObject)
-        // console.log(userObject)
     }
   
     useEffect(() => {
@@ -45,7 +43,6 @@ function Login(){
     }, [])
 
     function loginUser(details){
-        // console.log(details)
         fetch('/login', {
             method: "POST",
             credentials: 'include',
@@ -63,9 +60,9 @@ function Login(){
             }
         })
         .then(data => {
-            console.log(data)
-            localStorage.setItem("jwt-token", data[0].access_token);
-            localStorage.setItem("user-id", data[0].id);
+            sessionStorage.setItem("jwt-token", data[0].access_token);
+            sessionStorage.setItem("user-id", data[0].id);
+            sessionStorage.setItem('isLoggedIn', true)
             setAuth({accessToken: data[0].access_token})
             setUsername("")
             setPassword("")
