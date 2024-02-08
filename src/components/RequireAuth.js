@@ -4,7 +4,7 @@ import useAuth from "./CustomHooks/useAuth";
 const RequireAuth = () => {
     const {auth} = useAuth()
     const location = useLocation()
-    const loggedIn = localStorage.getItem('isLoggedIn')
+    const loggedIn = sessionStorage.getItem('isLoggedIn')
 
 
     return (
