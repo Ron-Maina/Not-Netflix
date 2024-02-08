@@ -68,7 +68,6 @@ function Signup(){
     }
 
     function registerUser(details){
-        console.log(details)
         fetch('/register-user', {
             method: "POST",
             headers: {
@@ -87,9 +86,9 @@ function Signup(){
               throw new Error('Request failed with status ' + response.status);
             }
         })
-        .then(data => {
+        .then(() => {
             setSuccessfulSignup(true);
-            navigate("/login")
+            navigate("/")
             setSuccessfulSignup(false);   
         })  
         .catch(error => {

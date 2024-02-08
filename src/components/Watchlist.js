@@ -131,7 +131,7 @@ function Watchlist() {
                             </div>
                         </>
                     ) :
-                        <p style={{textAlign: 'center'}}>No Movies to Display</p>
+                        <p style={{textAlign: 'center', marginTop: '20%', fontSize: '50px'}}>No Movies to Display</p>
                 }
               
             </div>

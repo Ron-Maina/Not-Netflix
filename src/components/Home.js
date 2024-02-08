@@ -20,7 +20,7 @@ import SearchBar from './SearchBar'
 
 function Home() {
 
-  const token = sessionStorage.getItem('jwt-token');
+  const token = localStorage.getItem('jwt-token');
 
   const [successful, setSuccessful] = useState(false)
   const [failed, setFailed] = useState(false)
@@ -93,7 +93,6 @@ function Home() {
   let videoData
 
   function PlayVideo(title){
-      console.log(title)
       let url = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyCGVPxVpmiOLtlubbjXXzIkZNjoyjPoL_w&q=${title} trailer&part=snippet&maxResults=1`
       fetch(url, {
         method: 'GET',
@@ -129,7 +128,6 @@ function Home() {
 
 
   function addToWatchlist(movie){
-    console.log(movie.overview)
     fetch('/watchlist', {
       method: "POST",
       credentials: 'include',
@@ -191,7 +189,7 @@ function Home() {
                 {movieDetails && (
                   <div id='selected_movie'
                   style={{backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movieDetails.poster_path})`, backgroundSize: "fill",
-                  backgroundPosition: 'center', filter: 'brightness(0.7)'}}>
+                  backgroundPosition: 'center', filter: 'brightness(70%)'}}>
                     <div style={{marginLeft: '50px', paddingTop: '100px', color: 'white'}}>
                       <div style={{display: 'flex', gap:'15px'}}>
                         <p><FaStar style={{ color: 'red', marginRight:'5px', marginTop: '-5px'}}/> {movieDetails.vote_average} </p>
@@ -201,10 +199,10 @@ function Home() {
                         <p>{movieDetails.original_language}</p>
                       </div>
 
-                      <div style={{width: '500px'}}>
-                        <h3 style={{fontFamily: "sans-serif"}}>{movieDetails.title || movieDetails.name}</h3>
+                      <div style={{width: '500px', zIndex: '5'}}>
+                        <h3 style={{fontFamily: "sans-serif", color: 'white'}}>{movieDetails.title || movieDetails.name}</h3>
                         <br/>
-                        <p style={{fontStyle: 'oblique'}}>{movieDetails.overview}</p>
+                        <p style={{fontStyle: 'oblique', color: 'white'}}>{movieDetails.overview}</p>
                       </div>
               
 

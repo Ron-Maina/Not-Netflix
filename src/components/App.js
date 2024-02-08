@@ -13,7 +13,6 @@ function App() {
   
   const refresh_token = sessionStorage.getItem('refresh-token');
   
-  useEffect(() => {
     setInterval(() => {
       fetch('/refresh', {
           method: 'GET',
@@ -29,7 +28,6 @@ function App() {
         localStorage.setItem("jwt-token", data.new_access_token);
       })
     }, 12 * 60 * 1000)
-  }, [])
 
   return (
     <>

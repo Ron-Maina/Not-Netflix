@@ -11,7 +11,7 @@ import { FaPlay } from "react-icons/fa";
 import { FiPlusCircle } from "react-icons/fi";
 
 
-function Carousel({renderTrailer, onRenderWatchlist}) {
+function Carousel({renderTrailer}) {
 
   const [Carousel, setCarousel] = useState([])
   
@@ -57,7 +57,7 @@ function Carousel({renderTrailer, onRenderWatchlist}) {
                 <FaPlay style={{fontSize: '10px', marginBottom: '2px', marginRight: '5px'}}/>
                 Watch
                </button> 
-              <button className='default-filter' onClick={() => onRenderWatchlist(movie)}> 
+              <button className='default-filter'> 
                 <FiPlusCircle style={{fontSize: '15px', marginBottom: '2px', marginRight: '5px'}}/> 
                 Add to Watchlist
               </button> 

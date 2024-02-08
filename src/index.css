@@ -13,7 +13,309 @@ code {
     monospace;
 }
 
-#app{
-  background-color: black;
+.sidebar{
+  z-index: 2;
+  color: white;
+  background-color: rgba(13, 13, 13, 0.6);
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+#sidebar-menu{
+  margin-top: 40px;
+  text-align: center;
+}
+#sidebar-items{
+  margin-top: 75px;
   color: white;
 }
+.auth-page{
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  color: white;
+}
+#authentication-box{
+  background-color: rgb(4, 4, 5, 0.6);
+  position: relative;
+  height: auto;
+  width: 600px;
+  margin: 0 auto;
+  border: 2px solid #333;
+  padding: 50px 20px 50px 20px;
+  border-radius: 30px;
+  margin-top: 100px
+}
+.login-details input{
+  background-color: gray;
+  height: 50px;
+  border-radius: 10px;
+  color: white;
+  border: 0;
+  text-align: center;
+}
+::placeholder{
+  color: white;
+  opacity: 1;
+  text-align: center;
+}
+.app-page{
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background-color: rgb(0, 0, 0);
+  color: white;
+}
+#navbar{
+  width: auto;
+  position: absolute;
+  top: 0px;
+  left: 0;
+  z-index: 1;
+}
+
+.home-nav{
+  position: relative;
+  height: 0;
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.search-bar input{
+  margin-top: 10px;
+  position: absolute;
+  z-index: 2;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: rgb(0, 0, 0, 0.7);
+  background-image: url('../public/search.png');
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: 7px 7px; 
+  border: 2px solid grey;
+  color: white;
+  text-align: center;
+  right: 150px;
+  -webkit-transition: height 0.8s ease-in-out;
+  transition: height 0.8s ease-in-out;
+}
+
+.search-bar input:focus{
+  width: 250px;
+  height: 40px;
+  border-radius: 20px;
+}
+.search-bar ::-webkit-input-placeholder {
+  text-align: center;
+  font-size: small;
+}
+
+.search-bar :-moz-placeholder {
+  text-align: center;
+  font-size: small;
+}
+
+
+.bg{
+  position: absolute;
+  height: 100%; 
+  width: 100%; 
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment:fixed;
+  filter: brightness(75%);
+  z-index: -1;
+  transform: scale(1.1);
+}
+.carousel{
+  z-index: 0;
+}
+.carousel-inner{
+  height: 500px;
+  width: 100%;
+  overflow: hidden;
+}
+.carousel-item{
+  height: 500px;
+  width: 1000px;
+  position: relative;
+}
+.carousel-item img{
+  height: 100%; 
+  width: 100%; 
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-attachment:fixed;
+  filter: brightness(70%);
+}
+#carousel-caption{
+  text-align: left;
+  padding-bottom: 70px;
+  width: 800px;
+  margin-left: -75px;
+}
+#categories{
+  z-index: 1;
+  background-color: rgb(42, 42, 42);
+  display: flex;
+  text-align: center;
+  justify-content: space-evenly;
+  padding-top: 10px;
+  color: white;
+}
+#categories p{
+  margin-top: 15px;
+  cursor: pointer;
+}
+.selected-category{
+  text-decoration: underline;
+  text-decoration-color: #800020;
+  text-underline-position: below;
+  text-underline-offset: 10px;
+  text-decoration-thickness: 2px;
+}
+#filters{
+  display: flex;
+  justify-content: space-evenly;
+  gap: 20px;
+  padding: 20px;
+  margin-top: 20px;
+}
+#filters p{
+  margin-top: 10px;
+}
+.default-filter{
+  border-radius: 70px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-width: 0;
+  background-color: rgb(76, 75, 75);
+  color: white;
+}
+.selected-filter{
+  border-radius: 70px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-width: 0;
+  background-color: #800020;
+  color: white;
+}
+.btn{
+  border-radius: 50px;
+  border: 2px solid red;
+  background-color: red;
+  color: black;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.danger {
+  border-color: #f44336;
+  color: red
+}
+
+.danger:hover {
+  background: #f44336;
+  color: white;
+}
+.films{
+  display: flex;
+  flex-basis: 0;
+  justify-content: center;
+  gap: 20px;
+  overflow-x: auto;
+  padding-left: 150px;
+  width: 100%;
+  -ms-overflow-style: none;  
+  scrollbar-width: none;
+}
+.films::-webkit-scrollbar{
+  display: none;
+}
+
+#selected_movie{
+  margin-top: 0;
+  height: 500px;
+  color: grey;
+}
+.video-overlay{
+  z-index: 3;
+}
+
+.watchlist .films{
+  margin-top: 100px;
+  overflow-x: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 30px;
+  height: 90vh;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.alert-box{
+  position: absolute;
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 50px;
+  margin-top: -100px;
+  z-index: 3;
+}
+
+.alert{
+  width: auto;
+  height: auto;
+}
+
+.my-modal{
+  width: 200px;
+}
+
+.my-modal .modal-content {
+  background-color: rgba(49, 49, 49);
+  color: white;
+}
+
+.watchlist-alert-box{
+  right: 0;
+  margin: 10px;
+  position: absolute;
+  width: auto;
+  height: auto;
+  z-index: 5;
+}
+/* style={{width: '300px', textAlign: 'center', zIndex: '3', position: 'absolute', justifyContent: 'flex-end', marginTop: '20px'}} */
+/* h4 {
+  font-family:Arial, Helvetica, sans-serif;
+  margin: 100px auto;
+  text-align: center;
+  position: relative;
+}
+h4:before {
+  content: "";
+  display: block;
+  width: 135px;
+  height: 2px;
+  background: gray;
+  left: 40px;
+  top: 50%;
+  position: absolute;
+}
+h4:after {
+  content: "";
+  display: block;
+  width: 135px;
+  height: 2px;
+  background: gray;
+  right: 40px;
+  top: 50%;
+  position: absolute;
+} */
