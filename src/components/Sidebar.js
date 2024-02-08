@@ -14,7 +14,7 @@ import { jwtDecode } from "jwt-decode";
 function Sidebar() {
 
     const navigate = useNavigate()
-    const token = localStorage.getItem('jwt-token');
+    const token = sessionStorage.getItem('jwt-token');
 
     const user = jwtDecode(token)
 
@@ -31,9 +31,9 @@ function Sidebar() {
     
 
     function Logout(){
-        localStorage.removeItem('jwt-token')
-        localStorage.removeItem("user-id");
-        localStorage.removeItem('isLoggedIn')
+        sessionStorage.removeItem('jwt-token')
+        sessionStorage.removeItem("user-id");
+        sessionStorage.removeItem('isLoggedIn')
 
         navigate("/", {replace: true})
     }
