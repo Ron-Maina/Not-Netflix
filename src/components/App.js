@@ -12,8 +12,6 @@ import Layout from './Layout';
 function App() {
   
   const refresh_token = sessionStorage.getItem('refresh-token');
-
-  console.log(refresh_token)
   
   useEffect(() => {
     setInterval(() => {
