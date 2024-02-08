@@ -22,13 +22,10 @@ import SearchBar from './SearchBar'
 function Home({onRenderWatchlist}) {
 
   const navigate = useNavigate()
-  const token = localStorage.getItem('jwt-token');
+  const token = sessionStorage.getItem('jwt-token');
+
   const [successful, setSuccessful] = useState(false)
   const [failed, setFailed] = useState(false)
-
-  const [myWatchlist, setMyWatchlist] = useState([])
-
-
   const [searchTerm, setSearchTerm] = useState('')
 
   const [Display, setDisplay] = useState([])
@@ -134,6 +131,7 @@ function Home({onRenderWatchlist}) {
 
 
   function addToWatchlist(movie){
+    console.log(movie.overview)
     fetch('/watchlist', {
       method: "POST",
       credentials: 'include',
@@ -145,12 +143,12 @@ function Home({onRenderWatchlist}) {
       body: JSON.stringify({
         'poster_path': movie.poster_path,
         'name': movie.name || movie.title,
+        'overview': movie.overview,
         'id': movie.id,
       })
     })
     .then(response => {
         if (response.ok) {
-            // return response.json();
             setSuccessful(true)
         } 
         else {
