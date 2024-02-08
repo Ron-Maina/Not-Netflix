@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import {FaStar} from "react-icons/fa";
 import {GoDotFill} from "react-icons/go";
@@ -19,9 +18,8 @@ import SearchBar from './SearchBar'
 
 
 
-function Home({onRenderWatchlist}) {
+function Home() {
 
-  const navigate = useNavigate()
   const token = sessionStorage.getItem('jwt-token');
 
   const [successful, setSuccessful] = useState(false)
