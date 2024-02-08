@@ -10,9 +10,11 @@ import {GoDotFill} from "react-icons/go";
 import { FaPlay } from "react-icons/fa";
 import { FiPlusCircle } from "react-icons/fi";
 
-function Carousel() {
+
+function Carousel({renderTrailer, onRenderWatchlist}) {
 
   const [Carousel, setCarousel] = useState([])
+  
   useEffect(() => {
     fetch('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc', {
       method: 'GET',
@@ -25,7 +27,7 @@ function Carousel() {
     .then(data => setCarousel(data.results)) 
   }, [])
 
-
+  
   return (
     <CCarousel className='carousel'>
     {Carousel.map(movie => (
@@ -48,8 +50,17 @@ function Carousel() {
             
 
             <div style={{display: 'flex', gap: '20px'}}>
-              <button style={{backgroundColor: 'red'}} className='selected-filter'> <FaPlay style={{fontSize: '10px', marginBottom: '2px', marginRight: '5px'}}/> Watch</button> 
-              <button className='default-filter'> <FiPlusCircle style={{fontSize: '15px', marginBottom: '2px', marginRight: '5px'}}/> Add to Watchlist</button> 
+              <button 
+              onClick={() => renderTrailer(movie.title)}
+              style={{backgroundColor: 'red'}} 
+              className='selected-filter'> 
+                <FaPlay style={{fontSize: '10px', marginBottom: '2px', marginRight: '5px'}}/>
+                Watch
+               </button> 
+              <button className='default-filter' onClick={() => onRenderWatchlist(movie)}> 
+                <FiPlusCircle style={{fontSize: '15px', marginBottom: '2px', marginRight: '5px'}}/> 
+                Add to Watchlist
+              </button> 
             </div>
         </CCarouselCaption>
       </CCarouselItem>
