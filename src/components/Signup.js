@@ -15,9 +15,6 @@ function Signup(){
     const [Password, setPassword] = useState("")
     const [confirmed_password, setconfirmed_password] = useState("")
 
-    const [userDetails, setUserDetails ] = useState([]);
-
-    const [user, setUser] = useState({})
 
     const [showPassword, setShowPassword] = useState(false);
     const [passworderror, setpassworderror] = useState(false); 
