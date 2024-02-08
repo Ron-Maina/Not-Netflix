@@ -60,7 +60,8 @@ function Login(){
             }
         })
         .then(data => {
-            sessionStorage.setItem("jwt-token", data[0].access_token);
+            localStorage.setItem("jwt-token", data[0].access_token);
+            sessionStorage.setItem("refresh-token", data[0].refresh_token);
             sessionStorage.setItem("user-id", data[0].id);
             sessionStorage.setItem('isLoggedIn', true)
             setAuth({accessToken: data[0].access_token})

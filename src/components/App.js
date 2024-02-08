@@ -1,82 +1,53 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Login from './Login';
 import Signup from './Signup';
 import Home from './Home';
-import MovieDetails from './MovieDetails';
 import Watchlist from './Watchlist';
+import RequireAuth from './RequireAuth';
 import {Route, Routes} from "react-router-dom"
-import { useEffect, useState } from 'react';
+import Layout from './Layout';
+
 
 function App() {
+  
+  const refresh_token = sessionStorage.getItem('refresh-token');
 
-  const [selected, setSelected] = useState([])
-  const [AddedWatchlist, setAddedWatchlist] = useState([])
-  const [watchlistTitle, setWatchlistTitle] = useState([])
-  const [myMovies, setmyMovies] = useState([])
-  const [userId, setUserId] = useState()
-
-
-  function renderUser(id){
-    setUserId(id)
-    fetch(`http://localhost:3001/userDetails/${id}`)
-    .then(res => res.json())
-    .then(data => setmyMovies(data.watchlist))
-  }
-
-
-
-  function renderDetails(filtered){
-    setSelected(filtered)
-  }
-
-  function update(movieDetails){
-    console.log(watchlistTitle)
-    console.log(userId)
-    fetch(`http://localhost:3001/userDetails/${userId}`)
-      .then(response => response.json())
-      .then(data => {
-        const updatedWatchlist = [...data.watchlist, {movieDetails}];
-        fetch(`http://localhost:3001/userDetails/${userId}`, {
-          method: "PATCH",
+  console.log(refresh_token)
+  
+  useEffect(() => {
+    setInterval(() => {
+      fetch('/refresh', {
+          method: 'GET',
+          credentials: 'include',
           headers: {
-            'Content-type': 'application/json'
+            "Accept": "application/json",
+            "Content-Type": "application/json",   
+            'Authorization': 'Bearer ' + refresh_token,
           },
-          body: JSON.stringify({watchlist: updatedWatchlist})
-        })
       })
-      alert("Added Successfully")
-      renderUser(userId)
-  }
-
-  function RenderWatchList(movieDetails){
-    console.log(movieDetails)
-    if (watchlistTitle.includes(movieDetails.title)){
-      alert("Movie Already in Watchlist!")
-      return null
-    }else{
-      setWatchlistTitle([...watchlistTitle, movieDetails.title])
-      update(movieDetails)
-    }       
-  }
-
-
-
-  function DeleteMovie(id){
-    console.log(AddedWatchlist)
-    const myMovies = AddedWatchlist.filter(movie => movie.id !== id)
-    setAddedWatchlist(myMovies)
-  }
-
+      .then(res => res.json())
+      .then(data => {
+        localStorage.setItem("jwt-token", data.new_access_token);
+      })
+    }, 12 * 60 * 1000)
+  }, [])
 
   return (
     <>
       <Routes>
-        <Route path= "/" element = {<Signup />} />
-        <Route path = "/login" element = {<Login onUser={renderUser}/>}/>
-        <Route path = "/home" element = {<Home onRenderDetails={renderDetails} />}/>
-        <Route path="/movies/:id" element={<MovieDetails selected={selected} onWatchlist={RenderWatchList}/>}/>
-        <Route path = "/my-watchlist" element = {<Watchlist AddedWatchlist = {AddedWatchlist} myMovies={myMovies} onRemove={DeleteMovie}/>}/>
+        <Route path='/' element={<Layout/>}>
+          {/* Public Routes */}
+          <Route path= "/signup" element = {<Signup />} />
+          <Route path = "/" element = {<Login />}/>
+
+          {/* Protected Routes */}
+          <Route element={<RequireAuth/>}>
+            
+            <Route path = "/home" element = {<Home/>}/>
+            <Route path = "/my-watchlist" element = {<Watchlist/>}/>
+          </Route>
+        </Route>
       </Routes>
     </>
   );

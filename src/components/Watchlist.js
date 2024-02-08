@@ -11,7 +11,7 @@ import Alert from 'react-bootstrap/Alert';
 function Watchlist() {
 
     const user_id = sessionStorage.getItem('user-id');
-    const token = sessionStorage.getItem('jwt-token');
+    const token = localStorage.getItem('jwt-token');
 
 
     const [myMovies, setMyMovies] = useState()
@@ -36,8 +36,6 @@ function Watchlist() {
     }
 
     const handleDelete = (movie_id) => {
-        console.log(movie_id)
-
         fetch(`/delete/${movie_id}/${user_id}`, {
             method: 'DELETE',
             credentials: 'include',
