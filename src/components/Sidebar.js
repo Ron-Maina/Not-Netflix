@@ -3,8 +3,6 @@ import React from 'react'
 import { useState } from 'react';
 import {
     CDBSidebarContent,
-    CDBSidebarFooter,
-    CDBSidebarHeader,
     CDBSidebarMenu,
     CDBSidebarMenuItem,
   } from 'cdbreact';
@@ -22,46 +20,32 @@ function Sidebar() {
 
     const user_name = (user.sub).split('@')
 
-    console.log(user_name)
-
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const handleSidebarOpen = () => {
       setSidebarOpen(true);
-      handleOver()
     };
 
     const handleSidebarClose = () => {
       setSidebarOpen(false);
-      handleOut()
     };
     
 
-    const [isActive, setIsActive] = useState(false);
-    function handleOver(){
-      setIsActive(true)
-    }
-
-    function handleOut(){
-        setIsActive(false)
-    }
-
     function Logout(){
-        fetch("/logout", {
-            method: "DELETE",
-        })
+        localStorage.removeItem('jwt-token')
+        localStorage.removeItem("user-id");
+        localStorage.removeItem('isLoggedIn')
 
-        navigate("/loginpage", {replace: true})
+        navigate("/", {replace: true})
     }
 
     return (
         <div className='sidebar' onMouseLeave={handleSidebarClose}>
             {!sidebarOpen ? (
-                <div onMouseEnter={handleSidebarOpen} onMouseLeave={handleOut}>
+                <div onMouseEnter={handleSidebarOpen} onMouseLeave={handleSidebarClose}>
                     
                     <CDBSidebarContent className="sidebar-content">
                         <CDBSidebarMenu id = 'sidebar-menu'>
                             <CDBSidebarMenuItem id= 'sidebar-items' icon="user"></CDBSidebarMenuItem>
-                            <CDBSidebarMenuItem id= 'sidebar-items' icon="search" onClick={Logout}></CDBSidebarMenuItem>
                             <NavLink to="/home">
                                 <CDBSidebarMenuItem id= 'sidebar-items' icon="home"></CDBSidebarMenuItem>
                             </NavLink>
@@ -78,7 +62,6 @@ function Sidebar() {
                     <CDBSidebarContent className="sidebar-content">
                         <CDBSidebarMenu id = 'sidebar-menu'>
                             <CDBSidebarMenuItem id= 'sidebar-items' icon="user">{`Welcome ${user_name[0]}`}</CDBSidebarMenuItem>
-                            <CDBSidebarMenuItem id= 'sidebar-items' icon="search" onClick={Logout}>Search</CDBSidebarMenuItem>
                             <NavLink to="/home">
                                 <CDBSidebarMenuItem id= 'sidebar-items' icon="home">Home</CDBSidebarMenuItem>
                             </NavLink>
