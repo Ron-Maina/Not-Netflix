@@ -10,8 +10,8 @@ import Alert from 'react-bootstrap/Alert';
 
 function Watchlist() {
 
-    const user_id = localStorage.getItem('user-id');
-    const token = localStorage.getItem('jwt-token');
+    const user_id = sessionStorage.getItem('user-id');
+    const token = sessionStorage.getItem('jwt-token');
 
 
     const [myMovies, setMyMovies] = useState()
