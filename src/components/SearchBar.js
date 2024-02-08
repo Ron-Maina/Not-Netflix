@@ -7,7 +7,6 @@ function SearchBar({searchTerm, onSearchChange}) {
         <div className = "search-bar">
             <label htmlFor='search-bar'></label>
             <input
-            placeholder='search'
             name='movie'
             type='text'
             value={searchTerm}
