@@ -6,6 +6,9 @@ By Ron Maina
 # Description
 This is a Netflix Clone web Application that allows users to view trailers for their chosen movie and add it to their watchlist. It showcases a variety of movies from different genres that can be filtered through multiple categories.
 
+# Demo
+[Not-Netflix-Walkthrough.webm](https://github.com/Ron-Maina/Not-Netflix/assets/134933484/2b92f0e4-91b7-45c7-8463-b630d2b22b9b)
+
 # How to Use
 ## Requirements
 * A computer, tablet or phone
@@ -33,13 +36,8 @@ Search for Not-Netflix-Server in my repositories and follow the instructions in 
 </strong>
 
 1. Clone this repository by running the following in your terminal 
-Front End 
 ```
 git clone git@github.com:Ron-Maina/Not-Netflix.git
-```
-Backend
-```
-git clone git@github.com:Ron-Maina/Not-Netflix-Server.git
 ```
 2. Change directory using:
 ```
