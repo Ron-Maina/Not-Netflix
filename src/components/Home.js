@@ -6,8 +6,7 @@ import { FaPlay } from "react-icons/fa";
 import { FiPlusCircle } from "react-icons/fi";
 import { AiOutlineClose } from 'react-icons/ai';
 import Alert from 'react-bootstrap/Alert';
-
-
+import Spinner from 'react-bootstrap/Spinner';
 
 
 import Sidebar from './Sidebar';
@@ -22,6 +21,7 @@ function Home() {
 
   const token = localStorage.getItem('jwt-token');
 
+  const [showSpinner, setShowSpinner] = useState(false); 
   const [successful, setSuccessful] = useState(false)
   const [failed, setFailed] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
@@ -94,6 +94,7 @@ function Home() {
 
   function PlayVideo(title){
       let url = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyCGVPxVpmiOLtlubbjXXzIkZNjoyjPoL_w&q=${title} trailer&part=snippet&maxResults=1`
+      setShowSpinner(true);
       fetch(url, {
         method: 'GET',
         headers : {
@@ -110,9 +111,11 @@ function Home() {
     function renderVideo(videoData){
       if (videoData){
         setShowVideo(true)
+        setShowSpinner(false);
       }
       else{
         alert("Error playing Video")
+        setShowSpinner(false);
       }
     }
     
@@ -181,6 +184,11 @@ function Home() {
           </div>
 
           <div>
+            {showSpinner && (
+              <div className="spinner-overlay">
+                <Spinner size="xl" animation="border"/>
+              </div>
+            )}
             {carouselVisible && (
               <div> <Carousel renderTrailer={PlayVideo} /> </div>
             )}
