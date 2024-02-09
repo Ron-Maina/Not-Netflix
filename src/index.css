@@ -250,6 +250,21 @@ code {
   z-index: 3;
 }
 
+.app-page .spinner-overlay{
+  z-index: 5;
+  position: absolute;
+  right: 50%;
+  top: 25%;
+  color: red;
+}
+
+.auth-page .spinner-overlay{
+  color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .watchlist .films{
   margin-top: 100px;
   overflow-x: hidden;
