@@ -49,7 +49,15 @@ and open in visual studio using
 ```
 code .
 ```
-3. Open a new terminal window in visual studio code and run ```npm install``` and ```npm start``` to start the web app
+3. Open a new terminal window in visual studio code and run 
+```
+npm install
+``` 
+and 
+```
+npm start
+``` 
+to start the web app
 
 # Technologies Used
 * React
