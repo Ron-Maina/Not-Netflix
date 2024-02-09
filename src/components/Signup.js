@@ -3,12 +3,15 @@ import { jwtDecode } from "jwt-decode";
 
 import { useNavigate, Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 import NavBar from './NavBar';
 
 
 function Signup(){
 
     const navigate = useNavigate()
+
+    const [showSpinner, setShowSpinner] = useState(false); 
 
     const [Username, setUsername] = useState("")
     const [Email, setEmail] = useState("")
@@ -68,6 +71,7 @@ function Signup(){
     }
 
     function registerUser(details){
+        setShowSpinner(true)
         fetch('/register-user', {
             method: "POST",
             headers: {
@@ -88,12 +92,17 @@ function Signup(){
         })
         .then(() => {
             setSuccessfulSignup(true);
-            navigate("/")
+            setTimeout(() => {
+                setShowSpinner(false)
+                navigate("/")
+            }, 2000)
+            
             setSuccessfulSignup(false);   
         })  
         .catch(error => {
             // Handle errors from the fetch or from the response handling
             setSignUpFailed(true)
+            setShowSpinner(false)
                 setTimeout(() => {
                     setSignUpFailed(false)
                 }, 2000)
@@ -179,7 +188,12 @@ function Signup(){
                         {passworderror && (
                             <p style={{ color: 'red', textAlign: 'center' }}>Password does not match. Try Again</p>
                         )}
-                        
+
+                        {showSpinner && (
+                            <div className="spinner-overlay">
+                                <Spinner size="xl" animation="border"/>
+                            </div>
+                        )}
                         <div style={{textAlign:"center", paddingTop: '20px'}} className="d-grid gap-2">
                             <Button variant="danger" type='submit' size='lg' style={{fontFamily: 'fantasy'}}>Signup</Button>{' '} 
                         </div>

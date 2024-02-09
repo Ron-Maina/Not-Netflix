@@ -5,14 +5,19 @@ import { jwtDecode } from "jwt-decode";
 import { useState} from 'react'
 import { useNavigate, Link} from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 import NavBar from './NavBar';
 import useAuth from './CustomHooks/useAuth';
+
+
 
 function Login(){
 
     const navigate = useNavigate() 
 
     const {setAuth} = useAuth()
+
+    const [showSpinner, setShowSpinner] = useState(false); 
 
     const [Username, setUsername] = useState("")
     const [Password, setPassword] = useState("")
@@ -43,6 +48,7 @@ function Login(){
     }, [])
 
     function loginUser(details){
+        setShowSpinner(true)
         fetch('/login', {
             method: "POST",
             credentials: 'include',
@@ -67,11 +73,16 @@ function Login(){
             setAuth({accessToken: data[0].access_token})
             setUsername("")
             setPassword("")
-            navigate('/home', {replace: true})
+            setTimeout(() => {
+                setShowSpinner(false)
+                navigate('/home', {replace: true})
+            }, 2000)
+            
         }) 
         .catch(error => {
             // Handle errors from the fetch or from the response handling
             setSignInFailed(true)
+            setShowSpinner(false)
                 setTimeout(() => {
                     setSignInFailed(false)
                 }, 2000)
@@ -135,6 +146,13 @@ function Login(){
                                 Show password
                             </label>
                         </div>
+
+                        {showSpinner && (
+                            <div className="spinner-overlay">
+                                <Spinner size="xl" animation="border"/>
+                            </div>
+                        )}
+
                         <div style={{textAlign:"center", paddingTop: '20px'}} className="d-grid gap-2">
                             <Button variant="danger" type='submit' size='lg' style={{fontFamily: 'fantasy'}}>Login</Button>{' '}   
                         </div>
